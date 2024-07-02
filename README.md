@@ -14,6 +14,7 @@ services:
     environment:
       - GH_RUNNER_URL=https://github.com/your_repo_here
       - GH_RUNNER_TOKEN=your_gh_runner_token_here
+      - GH_RUNNER_NAME=my-docker-gh-runner-name
     volumes:
       - runner_work:/actions-runner/_work
 volumes:
