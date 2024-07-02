@@ -24,6 +24,6 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
       with:
-        context: .
+        context: ./images/github-actions-sh-runner
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/github-actions-sh-runner:latest
