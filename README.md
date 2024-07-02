@@ -3,8 +3,11 @@ Containerized GitHub Actions self-hosted runner via Docker
 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/00.png" />
 
-# 00. Create GitHub Actions self-hosted runner
-## Add a new self-hosted runner
+# 00. Create Github personal access token or a GitHub Actions self-hosted runner 
+## Create a personal access token 
+- go to your Github Profile : Settings / Developer Settings / Personal Access Token
+
+## Or Add a new self-hosted runner
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/01.png" align="right"  />
 
 - go to your repo > Settings > Actions > Runners > Click "New self-hosted runner"
@@ -20,7 +23,7 @@ docker pull michaelakridge326/github-actions-sh-runner
 docker run -d \
   --name my-github-runner \
   -e GH_RUNNER_URL=https://github.com/your_repo_here \
-  -e GH_RUNNER_TOKEN=your_gh_runner_token_here \
+  -e GH_PAT=insert_your_github_pat_here \
   -e GH_RUNNER_NAME=my-docker-gh-runner-name \
   -v runner_work:/actions-runner/_work \
   michaelakridge326/github-actions-sh-runner
