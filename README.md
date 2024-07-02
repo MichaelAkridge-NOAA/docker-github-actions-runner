@@ -1,4 +1,4 @@
-# Docker GitHub Actions self-hosted runner
+# Docker GitHub Actions Self-Hosted Runner
 Containerized GitHub Actions self-hosted runner via Docker
 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/00.png" />
