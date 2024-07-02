@@ -27,3 +27,11 @@ jobs:
         context: ./images/github-actions-sh-runner
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/github-actions-sh-runner:latest
+    - name: Update Docker Hub description
+      uses: peter-evans/dockerhub-description@v4
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+        repository: ${{ secrets.DOCKER_USERNAME }}/github-actions-sh-runner
+        readme-filepath: ./images/github-actions-sh-runner/README.md
+        enable-url-completion: true
