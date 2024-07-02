@@ -3,15 +3,16 @@ Containerized GitHub Actions self-hosted runner via Docker
 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/00.png" />
 
-# 00. Create Github personal access token or a GitHub Actions self-hosted runner 
-## Create a personal access token 
+# 00 Setup Credentials 
+## 0a Create a personal access token (https://github.com/settings/tokens)
 - go to your Github Profile : Settings / Developer Settings / Personal Access Token
+- Generate new token
 
-## Or Add a new self-hosted runner
+## OR 0b Add a new self-hosted runner 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/01.png" align="right"  />
 
-- go to your repo > Settings > Actions > Runners > Click "New self-hosted runner"
-- look under the "Configure" section, and note your github runner token
+- go to your Github repo> Settings > Actions > Runners > Click "New self-hosted runner"
+- look under the "Configure" section, and make a note of your github runner token
 
 # 01 Pull Docker Image
 ```
@@ -37,8 +38,9 @@ services:
     image: michaelakridge326/github-actions-sh-runner
     container_name: my-github-runner
     environment:
-      - GH_REPO_URL=https://github.com/your_name/your_repo_here 
-      - GH_RUNNER_NAME=my-docker-gh-runner-name-02 # Name your github self hosted runner
+      - GH_REPO_URL=https://github.com/your_name/your_repo_here
+      # Name your github self hosted runner
+      - GH_RUNNER_NAME=my-docker-gh-runner-name
       # Option 1: Use a personal access token and script will fetch a github runner token for the repo
       - GH_PAT=insert_your_github_pat_here
       # Option 2: Instead of using a PAT, you can use a runner token that was manually generated 
@@ -53,12 +55,12 @@ volumes:
 docker-compose up -d
 ```
 
-# Notes: Using your New Self-hosted Runner
+# Using your New Self-hosted Runner with Github Workflows
 ## Update the YAML in your github workflow file for each job like so:
 ```
 runs-on: self-hosted
 ```
-## View Runners
+## View your Github Runners
 - Go back to your repo > Settings > Actions > Runners  to see your self hosted Runner
 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/03.png"/>
