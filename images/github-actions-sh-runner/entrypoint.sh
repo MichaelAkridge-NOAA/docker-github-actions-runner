@@ -15,12 +15,19 @@ fi
 # Fetch the runner token using the GitHub API if GH_PAT is provided
 if [ -n "$GH_PAT" ]; then
   echo "Fetching the runner token for $GH_REPO_URL using GH_PAT..."
-  response=$(curl -sX POST -H "Authorization: token ${GH_PAT}" ${GH_REPO_URL}/actions/runners/registration-token)
-  GH_RUNNER_TOKEN=$(echo $response | jq -r .token)
 
-  if [ -z "$GH_RUNNER_TOKEN" ]; then
+  # Extract owner and repo from GH_REPO_URL
+  REPO_PATH=$(echo $GH_REPO_URL | sed 's|https://github.com/||')
+  OWNER=$(echo $REPO_PATH | cut -d'/' -f1)
+  REPO=$(echo $REPO_PATH | cut -d'/' -f2)
+
+  # Fetch the runner token
+  RESPONSE=$(curl -sX POST -H "Authorization: Bearer ${GH_PAT}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${OWNER}/${REPO}/actions/runners/registration-token")
+  GH_RUNNER_TOKEN=$(echo $RESPONSE | jq -r .token)
+
+  if [ -z "$GH_RUNNER_TOKEN" ] || [ "$GH_RUNNER_TOKEN" == "null" ]; then
     echo "Failed to fetch runner token"
-    echo "Response from GitHub API: $response"
+    echo "Response from GitHub API: $RESPONSE"
     exit 1
   fi
 
