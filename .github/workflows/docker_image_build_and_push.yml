@@ -33,5 +33,5 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_TOKEN }}
         repository: ${{ secrets.DOCKER_USERNAME }}/github-actions-sh-runner
-        readme-filepath: ./images/github-actions-sh-runner/README.md
+        readme-filepath: ./README.md
         enable-url-completion: true
