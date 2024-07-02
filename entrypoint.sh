@@ -8,7 +8,7 @@ if [ -z "$GH_RUNNER_URL" ] || [ -z "$GH_RUNNER_TOKEN" ]; then
 fi
 
 # Configure the runner
-./config.sh --url $GH_RUNNER_URL --token $GH_RUNNER_TOKEN --unattended --replace --name $GH_RUNNER_NAME
+./config.sh --url $GH_RUNNER_URL --token $GH_RUNNER_TOKEN --unattended --replace
 
 # Run the runner
 ./run.sh
