@@ -1,6 +1,28 @@
 # docker-github-actions-runner
 Containerized GitHub Actions self-hosted runner via docker
-
+```
+docker pull michaelakridge326/github-actions-sh-runner
+```
+# Usage
+## Create & Update a docker-compose.yml
+```
+# docker-compose.yml
+services:
+  github-runner:
+    image: michaelakridge326/github-actions-sh-runner
+    container_name: my-github-runner
+    environment:
+      - GH_RUNNER_URL=https://github.com/your_repo_here
+      - GH_RUNNER_TOKEN=your_gh_runner_token_here
+    volumes:
+      - runner_work:/actions-runner/_work
+volumes:
+  runner_work:
+```
+## Run
+```
+docker-compose up -d
+```
 
 ----------
 #### Disclaimer
