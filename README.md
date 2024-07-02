@@ -34,9 +34,12 @@ services:
     image: michaelakridge326/github-actions-sh-runner
     container_name: my-github-runner
     environment:
-      - GH_RUNNER_URL=https://github.com/your_repo_here
-      - GH_RUNNER_TOKEN=your_gh_runner_token_here
-      - GH_RUNNER_NAME=my-docker-gh-runner-name
+      - GH_REPO_URL=https://github.com/your_name/your_repo_here 
+      - GH_RUNNER_NAME=my-docker-gh-runner-name-02 # Name your github self hosted runner
+      # Option 1: Use a personal access token and script will fetch a github runner token for the repo
+      - GH_PAT=insert_your_github_pat_here
+      # Option 2: Instead of using a PAT, you can use a runner token that was manually generated 
+      # - GH_RUNNER_TOKEN=insert_your_github_runner_token_here
     volumes:
       - runner_work:/actions-runner/_work
 volumes:
