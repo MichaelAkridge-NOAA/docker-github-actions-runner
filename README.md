@@ -5,7 +5,11 @@ Containerized GitHub Actions self-hosted runner via docker
 docker pull michaelakridge326/github-actions-sh-runner
 ```
 # 01. Create GitHub Actions self-hosted runner
-## Update docker-compose.yml file
+## Add a new self-hosted runner
+- go to your repo > Settings > Actions > Runners > Click "New self-hosted runner"
+- look under the "Configure" section, and note your github runner token
+
+## Create & Update a docker-compose.yml file with your URL, Token, and a Name for the runner
 ```
 # docker-compose.yml
 services:
@@ -21,13 +25,13 @@ services:
 volumes:
   runner_work:
 ```
-## Run Compose File
+## Run Docker Compose File
 ```
 docker-compose up -d
 ```
 
-# 02. Using Github Actions self-hosted runner
-## Update YAML in your github workflow file for each job like so:
+# 02. Using your New Self-hosted Runner
+## Update the YAML in your github workflow file for each job like so:
 ```
 runs-on: self-hosted
 ```
