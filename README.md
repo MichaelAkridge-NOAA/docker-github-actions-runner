@@ -1,25 +1,31 @@
 # Docker GitHub Actions Self-Hosted Runner
-Containerized GitHub Actions self-hosted runner via Docker
+Containerized GitHub Actions self-hosted runner via Docker. Ideal for:
+- Customization / Control / Flexibility
+- Performance / Support for Long-Running Jobs
+- Security and more.
 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/00.png" />
 
-# 00 Setup Credentials 
-## 0a Create a personal access token (https://github.com/settings/tokens)
+# Setup
+## Step 0 | Setup Credentials 
+### 0a Create a personal access token (https://github.com/settings/tokens)
 - go to your Github Profile : Settings / Developer Settings / Personal Access Token
 - Generate new token
 
-## OR 0b Add a new self-hosted runner 
+### OR 0b Add a new self-hosted runner 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/01.png" align="right"  />
 
 - go to your Github repo> Settings > Actions > Runners > Click "New self-hosted runner"
 - look under the "Configure" section, and make a note of your github runner token
 
-# 01 Pull Docker Image
+## Step 1 | Pull Docker Image
+- Docker Hub Link: https://hub.docker.com/r/michaelakridge326/github-actions-sh-runner
+
 ```
 docker pull michaelakridge326/github-actions-sh-runner
 ```
 
-# 02 Use Docker Run CMD
+## Step 2 | Run Docker Image Use Docker Run CMD
 ```
 docker run -d \
   --name my-github-runner \
@@ -29,7 +35,7 @@ docker run -d \
   -v runner_work:/actions-runner/_work \
   michaelakridge326/github-actions-sh-runner
 ```
-## OR 02.a - Alt Setup - w/ Docker Compose
+### OR Step 2a | Alt Setup using Docker Compose
 - Create & Update a docker-compose.yml file with your URL, Token, and a Name for the runner
 ```
 # docker-compose.yml
@@ -50,7 +56,7 @@ services:
 volumes:
   runner_work:
 ```
-### 02a - Continued - Run Docker Compose File
+#### Step 02a | Continued - Run Docker Compose File
 ```
 docker-compose up -d
 ```
