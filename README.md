@@ -1,11 +1,11 @@
 # Docker GitHub Actions self-hosted runner
 Containerized GitHub Actions self-hosted runner via Docker
 
-<img src="./docs/images/00.png" />
+<img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/00.png" />
 
 # 00. Create GitHub Actions self-hosted runner
 ## Add a new self-hosted runner
-<img src="./docs/images/01.png" align="right"  />
+<img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/01.png" align="right"  />
 
 - go to your repo > Settings > Actions > Runners > Click "New self-hosted runner"
 - look under the "Configure" section, and note your github runner token
@@ -55,7 +55,7 @@ runs-on: self-hosted
 ## View Runners
 - Go back to your repo > Settings > Actions > Runners  to see your self hosted Runner
 
-<img src="./docs/images/03.png"  />
+<img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/03.png"/>
 
 ----------
 #### Disclaimer
