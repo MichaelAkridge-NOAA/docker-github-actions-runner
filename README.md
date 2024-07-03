@@ -5,6 +5,7 @@ Containerized GitHub Actions self-hosted runner via Docker. Ideal for:
 - Security and more.
 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/00.png" />
+
 # Features:
 - pulls latest github runner via api(https://api.github.com/repos/actions/runner/releases/latest)
 - removes runner after container stops
