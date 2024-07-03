@@ -42,7 +42,7 @@ echo "Runner configured."
 # Function to clean up the runner
 cleanup() {
     echo "Removing runner..."
-    ./config.sh remove --unattended --token ${GH_RUNNER_TOKEN}
+    ./config.sh remove --token ${GH_RUNNER_TOKEN}
     echo "Runner removed."
 }
 
