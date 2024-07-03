@@ -35,12 +35,15 @@ if [ -n "$GH_PAT" ]; then
 fi
 
 # Configure the runner
+echo "Configuring the runner..."
 ./config.sh --url $GH_REPO_URL --token $GH_RUNNER_TOKEN --unattended --replace --name $GH_RUNNER_NAME
+echo "Runner configured."
 
 # Function to clean up the runner
 cleanup() {
     echo "Removing runner..."
     ./config.sh remove --unattended --token ${GH_RUNNER_TOKEN}
+    echo "Runner removed."
 }
 
 # Trap SIGTERM and SIGINT to execute cleanup
@@ -48,4 +51,8 @@ trap 'cleanup; exit 130' INT
 trap 'cleanup; exit 143' TERM
 
 # Run the runner
-./run.sh
+echo "Starting the runner..."
+./run.sh &
+
+# Wait for the runner to finish
+wait $!
