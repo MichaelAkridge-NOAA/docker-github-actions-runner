@@ -82,7 +82,7 @@ volumes:
 ```
 ### Then run (replace 4 with the number of runners you wish to start up)
 ```
-docker-compose up --scale github-runner=4
+docker-compose up --scale github-runner=4 -d
 ```
 # How to Use your New Self-hosted Runner with Github Workflows
 ## Update the YAML in your github workflow file for each job like so:
