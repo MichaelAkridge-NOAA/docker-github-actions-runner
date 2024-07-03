@@ -2,14 +2,21 @@
 # entrypoint.sh
 
 # Check for required environment variables
-if [ -z "$GH_REPO_URL" ] || [ -z "$GH_RUNNER_NAME" ]; then
-  echo "Missing GH_REPO_URL or GH_RUNNER_NAME environment variables."
+if [ -z "$GH_REPO_URL" ]; then
+  echo "Missing GH_REPO_URL environment variable."
   exit 1
 fi
 
 if [ -z "$GH_RUNNER_TOKEN" ] && [ -z "$GH_PAT" ]; then
   echo "Missing GH_RUNNER_TOKEN or GH_PAT environment variables."
   exit 1
+fi
+
+# Append a unique identifier to the runner name if provided
+if [ -n "$GH_RUNNER_NAME" ]; then
+  GH_RUNNER_NAME="${GH_RUNNER_NAME}-$(hostname)"
+else
+  GH_RUNNER_NAME=$(hostname)
 fi
 
 # Fetch the runner token using the GitHub API if GH_PAT is provided
