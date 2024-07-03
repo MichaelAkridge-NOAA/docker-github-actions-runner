@@ -63,8 +63,27 @@ docker run -d \
   -v runner_work:/actions-runner/_work \
   michaelakridge326/github-actions-sh-runner
 ```
-
-# Using your New Self-hosted Runner with Github Workflows
+# Spawn Multiple runners 
+### Setup docker-compose like so
+```
+# docker-compose.yml
+services:
+  github-runner:
+    image: michaelakridge326/github-actions-sh-runner
+    environment:
+      - GH_REPO_URL=https://github.com/your_name/your_repo_here
+      - GH_PAT==insert_your_github_pat_here
+      - GH_RUNNER_NAME=my-docker-gh-runner
+    volumes:
+      - runner_work:/actions-runner/_work
+volumes:
+  runner_work:
+```
+### Then run (replace 4 with the number of runners you wish to start up)
+```
+docker-compose up --scale github-runner=4
+```
+# How to Use your New Self-hosted Runner with Github Workflows
 ## Update the YAML in your github workflow file for each job like so:
 ```
 runs-on: self-hosted
