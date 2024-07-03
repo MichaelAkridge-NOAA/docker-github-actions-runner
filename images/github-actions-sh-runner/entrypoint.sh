@@ -37,5 +37,15 @@ fi
 # Configure the runner
 ./config.sh --url $GH_REPO_URL --token $GH_RUNNER_TOKEN --unattended --replace --name $GH_RUNNER_NAME
 
+# Function to clean up the runner
+cleanup() {
+    echo "Removing runner..."
+    ./config.sh remove --unattended --token ${GH_RUNNER_TOKEN}
+}
+
+# Trap SIGTERM and SIGINT to execute cleanup
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+
 # Run the runner
 ./run.sh
