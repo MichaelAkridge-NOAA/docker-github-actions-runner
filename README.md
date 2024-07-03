@@ -5,6 +5,9 @@ Containerized GitHub Actions self-hosted runner via Docker. Ideal for:
 - Security and more.
 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/00.png" />
+# Features:
+- pulls latest github runner via api(https://api.github.com/repos/actions/runner/releases/latest)
+- removes runner after container stops
 
 # Setup
 ## Step 0 | Setup Credentials 
@@ -24,18 +27,7 @@ Containerized GitHub Actions self-hosted runner via Docker. Ideal for:
 ```
 docker pull michaelakridge326/github-actions-sh-runner
 ```
-
-## Step 2 | Run Docker Image Use Docker Run CMD
-```
-docker run -d \
-  --name my-github-runner \
-  -e GH_REPO_URL=https://github.com/your_repo_here \
-  -e GH_PAT=insert_your_github_pat_here \
-  -e GH_RUNNER_NAME=my-docker-gh-runner-name \
-  -v runner_work:/actions-runner/_work \
-  michaelakridge326/github-actions-sh-runner
-```
-### OR Step 2a | Alt Setup using Docker Compose
+## Step 2 | Setup using Docker Compose
 - Create & Update a docker-compose.yml file with your URL, Token, and a Name for the runner
 ```
 # docker-compose.yml
@@ -56,9 +48,19 @@ services:
 volumes:
   runner_work:
 ```
-#### Step 02a | Continued - Run Docker Compose File
+#### Step 2 | Continued - Run Docker Compose File
 ```
 docker-compose up -d
+```
+## OR Step 2a | Run using the Docker Run CMD
+```
+docker run -d \
+  --name my-github-runner \
+  -e GH_REPO_URL=https://github.com/your_repo_here \
+  -e GH_PAT=insert_your_github_pat_here \
+  -e GH_RUNNER_NAME=my-docker-gh-runner-name \
+  -v runner_work:/actions-runner/_work \
+  michaelakridge326/github-actions-sh-runner
 ```
 
 # Using your New Self-hosted Runner with Github Workflows
