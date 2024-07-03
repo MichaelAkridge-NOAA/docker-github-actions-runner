@@ -10,7 +10,7 @@ Containerized GitHub Actions self-hosted runner via Docker. Ideal for:
 ## Step 0 | Setup Credentials 
 ### 0a Create a personal access token (https://github.com/settings/tokens)
 - go to your Github Profile : Settings / Developer Settings / Personal Access Token
-- Generate new token
+- Generate new token (with at least access permission scope for repo operations) 
 
 ### OR 0b Add a new self-hosted runner 
 <img src="https://github.com/MichaelAkridge-NOAA/docker-github-actions-runner/raw/main/docs/images/01.png" align="right"  />
