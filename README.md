@@ -11,6 +11,9 @@ Containerized GitHub Actions self-hosted runner via Docker. Ideal for:
 - removes runner from repo after container stops. recreates on when retarted
 - ability to scale up multiple runners
 
+## Read more about Github self-hosted runners
+- https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners
+
 # Setup
 ## Step 0 | Setup Credentials 
 ### 0a Create a personal access token (https://github.com/settings/tokens)
