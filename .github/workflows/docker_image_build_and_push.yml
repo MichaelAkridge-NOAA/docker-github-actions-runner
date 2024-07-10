@@ -51,7 +51,6 @@ jobs:
         with:
           context: ./images/github-actions-sh-runner # Directory containing Dockerfile and context
           push: true # Push the built image to GHCR
-          tags: ghcr.io/${{ github.repository_owner }}/github-actions-sh-runner:latest # Tag for the Docker image
             
       # Update Docker Hub repository description from README
       - name: Update Docker Hub description
