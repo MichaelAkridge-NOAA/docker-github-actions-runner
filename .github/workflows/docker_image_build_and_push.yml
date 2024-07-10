@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Image to Docker Hub & GHCR
 
 on:
   workflow_dispatch: # Trigger workflow manually from GitHub Actions
