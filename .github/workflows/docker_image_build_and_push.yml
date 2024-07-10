@@ -46,7 +46,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }} # GitHub token stored in secrets
 
       - name: Set lower case owner name
-        run: echo "OWNER_LC=${{ github.repository_owner,, }}" >> $GITHUB_ENV
+        run: echo "OWNER_LC=${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
       
       # Build and push Docker image to GitHub Container Registry
       - name: Build and push Docker image to GHCR
