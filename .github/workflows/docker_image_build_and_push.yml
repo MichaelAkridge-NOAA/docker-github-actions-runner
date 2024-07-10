@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }} # Docker Hub token stored in secrets
       
       # Build and push Docker image to Docker Hub
-      - name: Build and push Docker image
+      - name: Build and push Docker image to Docker Hub
         uses: docker/build-push-action@v6
         with:
           context: ./images/github-actions-sh-runner # Directory containing Dockerfile and context
@@ -44,14 +44,18 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }} # GitHub actor
           password: ${{ secrets.GITHUB_TOKEN }} # GitHub token stored in secrets
-        
+
+      - name: Set lower case owner name
+        run: echo "OWNER_LC=${{ github.repository_owner,, }}" >> $GITHUB_ENV
+      
       # Build and push Docker image to GitHub Container Registry
       - name: Build and push Docker image to GHCR
         uses: docker/build-push-action@v6
         with:
           context: ./images/github-actions-sh-runner # Directory containing Dockerfile and context
           push: true # Push the built image to GHCR
-            
+          tags: ghcr.io/${{ env.OWNER_LC }}/github-actions-sh-runner:latest # Tag for the Docker image
+                  
       # Update Docker Hub repository description from README
       - name: Update Docker Hub description
         uses: peter-evans/dockerhub-description@v4
@@ -60,4 +64,4 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }} # Docker Hub token stored in secrets
           repository: ${{ secrets.DOCKER_USERNAME }}/github-actions-sh-runner # Docker Hub repository name
           readme-filepath: ./README.md # Path to the README file to use for description
-          enable-url-completion: true # Enable URL completion in the Docker Hub description based on github links
+          enable-url-completion: true # Enable URL completion in the Docker Hub description based on GitHub links
