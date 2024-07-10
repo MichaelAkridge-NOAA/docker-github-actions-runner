@@ -1,6 +1,8 @@
 name: Build and Push Docker Image
+
 on:
   workflow_dispatch: # Trigger workflow manually from GitHub Actions
+
 jobs:
   build:
     runs-on: ubuntu-latest # Use the latest Ubuntu runner
