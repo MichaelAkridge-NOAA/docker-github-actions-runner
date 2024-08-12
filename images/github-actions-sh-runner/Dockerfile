@@ -22,7 +22,10 @@ RUN LATEST_RUNNER_VERSION=$(curl --silent "https://api.github.com/repos/actions/
     && echo "Downloading GitHub Runner version $LATEST_RUNNER_VERSION" \
     && curl -o actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz \
     && echo "Verifying the checksum" \
-    && echo "$(curl -sL https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/SHA256SUMS | grep "actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz")  actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz" | sha256sum -c - \
+    && CHECKSUM=$(curl -sL https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/SHA256SUMS | grep "actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz") \
+    && echo "$CHECKSUM" > checksum.txt \
+    && sha256sum -c checksum.txt \
+    && rm checksum.txt \
     && echo "Extracting the archive" \
     && tar xzf ./actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz \
     && echo "Cleanup" \
