@@ -38,20 +38,26 @@ docker pull michaelakridge326/github-actions-sh-runner
 # docker-compose.yml
 services:
   github-runner:
-    image: michaelakridge326/github-actions-sh-runner
+    image: michaelakridge326/github-actions-sh-runner:v1.0.0
     container_name: my-github-runner
     environment:
-      - GH_REPO_URL=https://github.com/your_name/your_repo_here
-      # Name your github self hosted runner
-      - GH_RUNNER_NAME=my-docker-gh-runner-name
-      # Option 1: Use a personal access token and script will fetch a github runner token for the repo
-      - GH_PAT=insert_your_github_pat_here
-      # Option 2: Instead of using a PAT, you can use a runner token that was manually generated 
-      # - GH_RUNNER_TOKEN=insert_your_github_runner_token_here
+      - GH_REPO_URL=https://github.com/your_name/your_repo_here 
+      - GH_RUNNER_NAME=my-docker-gh-runner-name-02
+    secrets:
+      - gh_pat
     volumes:
       - runner_work:/actions-runner/_work
+    restart: unless-stopped
+    networks:
+      - runner-network
 volumes:
   runner_work:
+secrets:
+  gh_pat:
+    file: ./secrets/gh_pat.txt
+networks:
+  runner-network:
+    driver: bridge
 ```
 #### Step 2 | Continued - Run Docker Compose File
 ```
@@ -71,17 +77,28 @@ docker run -d \
 ### Setup docker-compose like so
 ```
 # docker-compose.yml
+version: '3.8'
 services:
   github-runner:
-    image: michaelakridge326/github-actions-sh-runner
+    image: michaelakridge326/github-actions-sh-runner:v1.0.0
     environment:
-      - GH_REPO_URL=https://github.com/your_name/your_repo_here
-      - GH_PAT==insert_your_github_pat_here
-      - GH_RUNNER_NAME=my-docker-gh-runner
+      - GH_REPO_URL=https://github.com/your_name/your_repo_here 
+      - GH_RUNNER_NAME=my-docker-gh-runner-name-02
+    secrets:
+      - gh_pat
     volumes:
       - runner_work:/actions-runner/_work
+    restart: unless-stopped
+    networks:
+      - runner-network
 volumes:
   runner_work:
+secrets:
+  gh_pat:
+    file: ./secrets/gh_pat.txt
+networks:
+  runner-network:
+    driver: bridge
 ```
 ### Then run (replace 4 with the number of runners you wish to start up)
 ```
