@@ -1,6 +1,8 @@
 #!/bin/bash
 # entrypoint.sh
 
+set -e  # Exit immediately if a command exits with a non-zero status
+
 # Check for required environment variables
 if [ -z "$GH_REPO_URL" ]; then
   echo "Missing GH_REPO_URL environment variable."
@@ -24,13 +26,13 @@ if [ -n "$GH_PAT" ]; then
   echo "Fetching the runner token for $GH_REPO_URL using GH_PAT..."
 
   # Extract owner and repo from GH_REPO_URL
-  REPO_PATH=$(echo $GH_REPO_URL | sed 's|https://github.com/||')
-  OWNER=$(echo $REPO_PATH | cut -d'/' -f1)
-  REPO=$(echo $REPO_PATH | cut -d'/' -f2)
+  REPO_PATH=$(echo "$GH_REPO_URL" | sed 's|https://github.com/||')
+  OWNER=$(echo "$REPO_PATH" | cut -d'/' -f1)
+  REPO=$(echo "$REPO_PATH" | cut -d'/' -f2)
 
   # Fetch the runner token
   RESPONSE=$(curl -sX POST -H "Authorization: Bearer ${GH_PAT}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${OWNER}/${REPO}/actions/runners/registration-token")
-  GH_RUNNER_TOKEN=$(echo $RESPONSE | jq -r .token)
+  GH_RUNNER_TOKEN=$(echo "$RESPONSE" | jq -r .token)
 
   if [ -z "$GH_RUNNER_TOKEN" ] || [ "$GH_RUNNER_TOKEN" == "null" ]; then
     echo "Failed to fetch runner token"
@@ -43,13 +45,13 @@ fi
 
 # Configure the runner
 echo "Configuring the runner..."
-./config.sh --url $GH_REPO_URL --token $GH_RUNNER_TOKEN --unattended --replace --name $GH_RUNNER_NAME
+./config.sh --url "$GH_REPO_URL" --token "$GH_RUNNER_TOKEN" --unattended --ephemeral --replace --name "$GH_RUNNER_NAME"
 echo "Runner configured."
 
 # Function to clean up the runner
 cleanup() {
     echo "Removing runner..."
-    ./config.sh remove --token ${GH_RUNNER_TOKEN}
+    ./config.sh remove --token "${GH_RUNNER_TOKEN}" || echo "Runner was already removed."
     echo "Runner removed."
 }
 
