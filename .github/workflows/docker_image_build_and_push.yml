@@ -9,7 +9,6 @@ jobs:
         folder: ['./images/github-actions-sh-runner'] # Adjust this as needed
     env:
       VERSION: 1.0.1 # Set this to your current version
-
     steps:
       # Check out the repository to the runner
       - name: Checkout repository
@@ -56,7 +55,7 @@ jobs:
         run: |
           IMAGE_NAME=$(basename ${{ matrix.folder }})
           echo "Building and pushing $IMAGE_NAME"
-          docker build ${{ matrix.folder }} -f ${{ matrix.folder }}/Dockerfile --tag ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:latest --tag ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:${{ env.VERSION }} --tag ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:${{ github.sha }}
-          docker push ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:latest
-          docker push ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:${{ env.VERSION }}
-          docker push ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:${{ github.sha }}
+          docker build ${{ matrix.folder }} -f ${{ matrix.folder }}/Dockerfile --tag ghcr.io/${{ env.OWNER_LC }}/docker-github-actions-runner/${IMAGE_NAME}:latest --tag ghcr.io/${{ env.OWNER_LC }}/docker-github-actions-runner/${IMAGE_NAME}:${{ env.VERSION }} --tag ghcr.io/${{ env.OWNER_LC }}/docker-github-actions-runner/${IMAGE_NAME}:${{ github.sha }}
+          docker push ghcr.io/${{ env.OWNER_LC }}/docker-github-actions-runner/${IMAGE_NAME}:latest
+          docker push ghcr.io/${{ env.OWNER_LC }}/docker-github-actions-runner/${IMAGE_NAME}:${{ env.VERSION }}
+          docker push ghcr.io/${{ env.OWNER_LC }}/docker-github-actions-runner/${IMAGE_NAME}:${{ github.sha }}
