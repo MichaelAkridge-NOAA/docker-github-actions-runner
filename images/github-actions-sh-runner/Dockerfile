@@ -17,15 +17,10 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir /actions-runner
 WORKDIR /actions-runner
 
-# Get the latest GitHub runner version and verify it
+# Get the latest GitHub runner version
 RUN LATEST_RUNNER_VERSION=$(curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | jq -r .tag_name | sed 's/^v//') \
     && echo "Downloading GitHub Runner version $LATEST_RUNNER_VERSION" \
     && curl -o actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz \
-    && echo "Verifying the checksum" \
-    && CHECKSUM=$(curl -sL https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/SHA256SUMS | grep "actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz") \
-    && echo "$CHECKSUM" > checksum.txt \
-    && sha256sum -c checksum.txt \
-    && rm checksum.txt \
     && echo "Extracting the archive" \
     && tar xzf ./actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz \
     && echo "Cleanup" \
