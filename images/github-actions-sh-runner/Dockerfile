@@ -19,9 +19,13 @@ WORKDIR /actions-runner
 
 # Get the latest GitHub runner version and verify it
 RUN LATEST_RUNNER_VERSION=$(curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | jq -r .tag_name | sed 's/^v//') \
+    && echo "Downloading GitHub Runner version $LATEST_RUNNER_VERSION" \
     && curl -o actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz \
-    && echo "$(curl -sL https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/SHA256SUMS)  actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz" | sha256sum -c - \
+    && echo "Verifying the checksum" \
+    && echo "$(curl -sL https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/SHA256SUMS | grep "actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz")  actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz" | sha256sum -c - \
+    && echo "Extracting the archive" \
     && tar xzf ./actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz \
+    && echo "Cleanup" \
     && rm actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz
 
 # Copy entrypoint script
