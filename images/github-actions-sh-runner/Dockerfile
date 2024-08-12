@@ -1,5 +1,4 @@
-# Dockerfile
-FROM ubuntu:20.04
+FROM ubuntu:20.04-slim
 
 # Set environment variable to avoid interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -18,9 +17,10 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir /actions-runner
 WORKDIR /actions-runner
 
-# Get the latest github runner version
+# Get the latest GitHub runner version and verify it
 RUN LATEST_RUNNER_VERSION=$(curl --silent "https://api.github.com/repos/actions/runner/releases/latest" | jq -r .tag_name | sed 's/^v//') \
     && curl -o actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz \
+    && echo "$(curl -sL https://github.com/actions/runner/releases/download/v${LATEST_RUNNER_VERSION}/SHA256SUMS)  actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz" | sha256sum -c - \
     && tar xzf ./actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz \
     && rm actions-runner-linux-x64-${LATEST_RUNNER_VERSION}.tar.gz
 
@@ -31,8 +31,11 @@ COPY entrypoint.sh /actions-runner/entrypoint.sh
 RUN useradd -m runner \
     && mkdir -p /actions-runner/_work \
     && chown -R runner:runner /actions-runner \
-    && chmod -R 755 /actions-runner \
+    && chmod -R 750 /actions-runner \
     && chmod +x /actions-runner/entrypoint.sh
+
 # Switch to the non-root user
 USER runner
+
+# Set a more restrictive ENTRYPOINT
 ENTRYPOINT ["/actions-runner/entrypoint.sh"]
