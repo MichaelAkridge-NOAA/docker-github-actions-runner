@@ -1,4 +1,4 @@
-# Docker GitHub Actions Self-Hosted Runner
+# Docker GitHub Actions Self-Hosted Runner (ephemeral)
 Containerized GitHub Actions self-hosted runner via Docker. Ideal for:
 - Customization / Control / Flexibility
 - Performance / Support for Long-Running Jobs
@@ -10,6 +10,7 @@ Containerized GitHub Actions self-hosted runner via Docker. Ideal for:
 - pulls latest offical github runner via github api(https://api.github.com/repos/actions/runner/releases/latest)
 - removes runner from repo after container stops. recreates on when retarted
 - ability to scale up multiple runners
+- runs in “ephemeral” mode which creates (and destroys) short-lived compute environment per job on demand
 
 ## Read more about Github self-hosted runners
 - https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners
