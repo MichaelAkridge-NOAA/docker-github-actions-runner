@@ -1,4 +1,4 @@
-FROM ubuntu:20.04-slim
+FROM ubuntu:20.04
 
 # Set environment variable to avoid interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
