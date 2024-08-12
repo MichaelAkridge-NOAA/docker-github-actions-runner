@@ -1,29 +1,23 @@
 name: Build and Push Image to Docker Hub & GHCR
-
 on:
   workflow_dispatch: # Trigger workflow manually from GitHub Actions
-
 jobs:
   build:
     runs-on: ubuntu-latest # Use the latest Ubuntu runner
+    strategy:
+      matrix:
+        folder: ['./images/github-actions-sh-runner'] # Adjust this as needed
+    env:
+      VERSION: 1.0.1 # Set this to your current version
+
     steps:
       # Check out the repository to the runner
       - name: Checkout repository
         uses: actions/checkout@v4
-      
-      # Set up Docker Buildx for advanced build features
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      
-      # Cache Docker layers to speed up subsequent builds
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache # Path to cache Docker layers
-          key: ${{ runner.os }}-buildx-${{ github.sha }} # Unique cache key based on the OS and commit SHA
-          restore-keys: |
-            ${{ runner.os }}-buildx- # Fallback cache key to restore previous cache if exact match is not found
-      
+        
+      - name: Set lower case owner name
+        run: echo "OWNER_LC=${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]' | awk -F "=" '{print "OWNER_LC="$2}' >> $GITHUB_ENV
+        
       # Log in to Docker Hub using github repo secrets for authentication
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -38,25 +32,6 @@ jobs:
           context: ./images/github-actions-sh-runner # Directory containing Dockerfile and context
           push: true # Push the built image to Docker Hub
           tags: ${{ secrets.DOCKER_USERNAME }}/github-actions-sh-runner:latest # Tag for the Docker image
-
-      # Log in to GitHub Container Registry
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }} # GitHub actor
-          password: ${{ secrets.GHCR_PAT }} # GitHub token stored in secrets
-
-      - name: Set lower case owner name
-        run: echo "OWNER_LC=${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]' | awk -F "=" '{print "OWNER_LC="$2}' >> $GITHUB_ENV
-
-      # Build and push Docker image to GitHub Container Registry
-      - name: Build and push Docker image to GHCR
-        uses: docker/build-push-action@v6
-        with:
-          context: ./images/github-actions-sh-runner # Directory containing Dockerfile and context
-          push: true # Push the built image to GHCR
-          tags: ghcr.io/${{ env.OWNER_LC }}/github-actions-sh-runner:latest # Tag for the Docker image
                   
       # Update Docker Hub repository description from README
       - name: Update Docker Hub description
@@ -67,3 +42,21 @@ jobs:
           repository: ${{ secrets.DOCKER_USERNAME }}/github-actions-sh-runner # Docker Hub repository name
           readme-filepath: ./README.md # Path to the README file to use for description
           enable-url-completion: true # Enable URL completion in the Docker Hub description based on GitHub links
+
+      # Step to login to GitHub Container Registry
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step to build and push the Docker image
+      - name: Build and push Docker image
+        run: |
+          IMAGE_NAME=$(basename ${{ matrix.folder }})
+          echo "Building and pushing $IMAGE_NAME"
+          docker build ${{ matrix.folder }} -f ${{ matrix.folder }}/Dockerfile --tag ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:latest --tag ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:${{ env.VERSION }} --tag ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:${{ github.sha }}
+          docker push ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:latest
+          docker push ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:${{ env.VERSION }}
+          docker push ghcr.io/${{ env.OWNER_LC }}/container-images/${IMAGE_NAME}:${{ github.sha }}
